@@ -1,0 +1,3 @@
+Es gibnt eine Bedarfsliste, in der jeder Benutzer Gegenstände hinzufügen kann. Hier kann dann die Menge etc. eignegeben und bearbeitet werden.
+DIe Benutzer können dann jeden dieser Gegenstände auf ihre persönliche Einkaufsliste setzen. In der Bedarfsliste werden dann alle Benutzer angezeigt, die diesen Gegenstand besorgen oder einpacken wollen.
+So können mehrere Benutzer sich für Gegenstädne melden, aber haben eine eigene Übersicht über ihre Einkaufsliste.

@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="danger" (click)="close()">
+         Abbrechen
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button color="success" (click)="save()" [disabled]="!this.listForm.valid">
+         Speichern
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Neue Liste hinzufügen</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+  <form [formGroup]="listForm" class="form">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name der Liste</ion-label>
+        <ion-input formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-select label="Mitglieder" placeholder="Mitglieder" formControlName="mitglieder">
+          @for (mitglied of list?.zugeordneteUser; track $index) {
+            <ion-select-option value="{{mitglied.name}}">{{mitglied.name}}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </form>

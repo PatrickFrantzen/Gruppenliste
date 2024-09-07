@@ -1,0 +1,60 @@
+<ion-header id="main-content">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Menü</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-menu side="start" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menü</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-list [inset]="true">
+
+      <ion-button class="cursor-pointer" color="success" id="open-liste-modal">
+        <ion-icon name="add" slot="start"></ion-icon>
+        Neue Liste erstellen
+      </ion-button>
+
+      @if (userLoggedIn() ) { @for(list of allLists(); track list){
+      <ion-menu-toggle>
+        <ion-item
+          class="cursor-pointer"
+          (click)="selectList(list)"
+          routerLink="/"
+        >
+          {{ list.name }}
+        </ion-item>
+      </ion-menu-toggle>
+      } } @if (authService.adminSignal()) {
+      <ion-menu-toggle>
+        <ion-item class="cursor-pointer" routerLink="/admin"> Admin </ion-item>
+      </ion-menu-toggle>
+      }
+
+      <ion-menu-toggle>
+        <ion-item>
+          <span
+            class="cursor-pointer"
+            routerLink="/login"
+            (click)="userLoggedIn() !== '' && logout()"
+          >
+            {{ userLoggedIn()  === "" ? "Login" : "Logout" }}
+          </span>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+
+<ion-modal trigger="open-liste-modal" (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+    <app-add-list (closeModal)="handleCloseModal()"></app-add-list>
+  </ng-template>
+</ion-modal>

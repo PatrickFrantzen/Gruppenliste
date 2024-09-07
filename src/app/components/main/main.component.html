@@ -1,0 +1,39 @@
+<div class="container">
+  @if(currentListID()) {
+  <div>
+    <h2>{{ currentListName() }}</h2>
+    <ion-button class="position" color="success" slot="start" id="open-modal">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
+    </ion-button>
+
+    <app-current-list [listItems]="bedarfsItemForDisplay()"></app-current-list>
+
+    <!-- <span>Noch offen:</span>
+    <app-current-list
+      [listItems]="currentList().items"
+      [kaufStatus]="false"
+    ></app-current-list>
+  </div>
+
+  <div class="mt-4">
+    <span>Bereits gekauft:</span>
+
+    <app-current-list
+      [listItems]="currentList().items"
+      [kaufStatus]="true"
+    ></app-current-list> -->
+  </div>
+  
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <app-item (closeModal)="handleCloseModal()" [modus]="'create'"></app-item>
+    </ng-template>
+  </ion-modal>
+
+
+  } @else {
+  <div>
+    <h1>Keine Liste ausgewählt</h1>
+  </div>
+  }
+</div>

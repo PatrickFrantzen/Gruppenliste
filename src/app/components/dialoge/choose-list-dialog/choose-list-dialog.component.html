@@ -1,0 +1,13 @@
+<mat-dialog-content>
+  @for (list of allLists(); track $index) {
+  <div>
+    <span class="cursor-pointer" routerLink="/" (click)="choosenID(list.id)">{{
+      list.name
+    }}</span>
+  </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Schließen</button>
+</mat-dialog-actions>

@@ -1,0 +1,86 @@
+<!-- <table
+  mat-table
+  [dataSource]="listItems() | kaufStatus : kaufStatus()"
+  class="mat-elevation-z8"
+  
+> -->
+
+@if (listItems().length > 0) {
+  <table
+  mat-table
+  [dataSource]="listItems()"
+  class="mat-elevation-z8"
+  
+>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let element" >
+      <div class="item-gruppe">
+         <span >        {{ element.name }} </span>
+        <span>Menge: {{ element.amount }} {{ element.unit }}</span>
+        <span>Kategorie: {{ element.category }}</span> 
+        <span [ngClass]="{'highlight': checkifUserIsAssigned(element)}">Zugeordnet: 
+          {{ getFormattedZugeordneteUser(element.zugeordneteUser) }}
+        </span>
+      </div>
+    </td>
+  </ng-container>
+
+
+  <!-- <ng-container matColumnDef="bought">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element" class="w-10">
+      <mat-checkbox
+        [checked]="element.bought"
+        (change)="changeEinkaufsstatus(element)"
+      ></mat-checkbox>
+    </td>
+  </ng-container> -->
+
+  <ng-container matColumnDef="edit">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element" class="cursor-pointer w-10" (click)="openEditModal(element)"><mat-icon>edit</mat-icon></td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element" class="cursor-pointer w-10" (click)="deleteItem(element)"><mat-icon>delete</mat-icon></td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns" >
+  </tr>
+</table>
+} @else() {
+  <div>
+    <h1>Noch keine Einträge vorhanden.</h1>
+  </div>
+}
+
+
+<!-- <ion-modal trigger="editItemModal" (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+    <app-item (closeModal)="handleCloseModal()" [modus]="'edit'"></app-item>
+  </ng-template>
+</ion-modal> -->
+
+
+  <!-- <ng-container matColumnDef="zugeordnet">
+    <th mat-header-cell *matHeaderCellDef>Wem zugeordnet?</th>
+    <td mat-cell *matCellDef="let element">
+      <div>
+
+      </div>
+    </td>
+  </ng-container> -->
+
+  <!-- <ng-container matColumnDef="zuordnen">
+    <th mat-header-cell *matHeaderCellDef>Mir zuordnen?</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-checkbox
+        [checked]="element.zugeordneteUser ? element.zugeordneteUser.includes(this.userSerivce.user()) : false"
+        (change)="changeZuordnung(element)"
+      ></mat-checkbox>
+    </td>
+  </ng-container> -->
