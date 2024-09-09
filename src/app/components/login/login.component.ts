@@ -25,6 +25,7 @@ import {
   IonInputPasswordToggle, IonInput } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eye, eyeOff } from 'ionicons/icons';
+import { AuthStore } from '../../store/auth.store';
 
 @Component({
   selector: 'app-login',
@@ -51,6 +52,7 @@ export class LoginComponent {
   router = inject(Router);
   userService = inject(UserService);
   authService = inject(AuthService);
+  authStore = inject(AuthStore);
   fb = inject(FormBuilder);
   hide = signal(true);
 
@@ -86,7 +88,7 @@ export class LoginComponent {
   login() {
     const name = this.form.get('name')?.getRawValue();
     const password = this.form.get('password')?.getRawValue();
-    this.authService.login(name, password);
+    this.authStore.login(name, password);
     // this.authService.createUser('Patrick', '1234');
     // this.userService.login();
     // this.router.navigate(['/']);

@@ -7,7 +7,7 @@ export class Item {
         this.unit = unit || '';
         this.category = category || '';
         this.bought = false;
-        this.zugeordneteUser = [];
+        this.zugeordneteMitglieder = [];
         this.id = Math.floor(Math.random() * 1000);
     }
 
@@ -16,7 +16,7 @@ export class Item {
     unit: string;
     category: string;
     bought: boolean;
-    zugeordneteUser: Mitglied[];
+    zugeordneteMitglieder: Mitglied[];
     id: number;
 }
 

@@ -65,10 +65,10 @@ export class CurrentListComponent {
     const currentUser = this.userSerivce.user();
     this.currentList().items = this.currentList().items.map((i) => {
       if (i === item) {
-        const isUserAssigned = i.zugeordneteUser.includes(currentUser);
+        const isUserAssigned = i.zugeordneteMitglieder.includes(currentUser);
         const updatedUsers = isUserAssigned
-          ? i.zugeordneteUser.filter((u) => u !== currentUser)
-          : [...i.zugeordneteUser, currentUser];
+          ? i.zugeordneteMitglieder.filter((u) => u !== currentUser)
+          : [...i.zugeordneteMitglieder, currentUser];
         return { ...i, zugeordneteUser: updatedUsers };
       }
       return i;
@@ -110,7 +110,12 @@ export class CurrentListComponent {
   }
 
   checkifUserIsAssigned(item: Item) {
-    return item.zugeordneteUser.includes(this.userSerivce.user());
+    console.log('item', item);
+    if (item.zugeordneteMitglieder.length === 0) {
+      return false;
+      
+    } else 
+    return item.zugeordneteMitglieder.includes(this.userSerivce.user());
   }
 
   handleCloseModal() {

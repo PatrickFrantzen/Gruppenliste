@@ -22,6 +22,7 @@ import { addIcons } from 'ionicons';
 import { add } from 'ionicons/icons';
 import { AddListComponent } from '../dialoge/add-list/add-list.component';
 import { Liste } from '../../models/list.model';
+import { AuthStore } from '../../store/auth.store';
 
 @Component({
   selector: 'app-header',
@@ -56,17 +57,20 @@ export class HeaderComponent {
     addIcons({ add });
   }
   @ViewChild(IonModal) addListeModal: IonModal | undefined;
+  readonly authStore = inject(AuthStore);
   readonly userService = inject(UserService);
   readonly authService = inject(AuthService);
   public setChoosenListID = inject(CurrentListService).choosenListIDSignal;
   public setChoosenListName = inject(CurrentListService).currentListNameSignal;
   readonly currentListService = inject(CurrentListService);
-  readonly userLoggedIn = this.authService.tokenSignal;
+  // readonly userLoggedIn = this.authService.tokenSignal;
 
   allLists = this.currentListService.bedarfsliste;
 
   logout() {
-    this.authService.logout();
+    // this.authService.logout();
+    this.authStore.logout();
+
   }
 
   selectList(liste: Liste) {

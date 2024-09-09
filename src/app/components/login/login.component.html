@@ -35,7 +35,7 @@
     </ion-list>
 
     <ion-buttons>
-      @if (authService.adminSignal()) {
+      @if (authStore.isAdmin()) {
       <ion-button
         slot="start"
         color="danger"

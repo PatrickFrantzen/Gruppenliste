@@ -17,10 +17,10 @@
     <td mat-cell *matCellDef="let element" >
       <div class="item-gruppe">
          <span >        {{ element.name }} </span>
-        <span>Menge: {{ element.amount }} {{ element.unit }}</span>
-        <span>Kategorie: {{ element.category }}</span> 
+        <span>Menge: {{ element.menge }} {{ element.einheit }}</span>
+        <span>Kategorie: {{ element.kategorie }}</span> 
         <span [ngClass]="{'highlight': checkifUserIsAssigned(element)}">Zugeordnet: 
-          {{ getFormattedZugeordneteUser(element.zugeordneteUser) }}
+          {{ getFormattedZugeordneteUser(element.zugeordneteMitglieder) }}
         </span>
       </div>
     </td>

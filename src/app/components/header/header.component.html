@@ -21,7 +21,7 @@
         Neue Liste erstellen
       </ion-button>
 
-      @if (userLoggedIn() ) { @for(list of allLists(); track list){
+      @if (authStore.token() ) { @for(list of allLists(); track list.id){
       <ion-menu-toggle>
         <ion-item
           class="cursor-pointer"
@@ -31,7 +31,7 @@
           {{ list.name }}
         </ion-item>
       </ion-menu-toggle>
-      } } @if (authService.adminSignal()) {
+      } } @if (authStore.isAdmin()) {
       <ion-menu-toggle>
         <ion-item class="cursor-pointer" routerLink="/admin"> Admin </ion-item>
       </ion-menu-toggle>
@@ -42,9 +42,9 @@
           <span
             class="cursor-pointer"
             routerLink="/login"
-            (click)="userLoggedIn() !== '' && logout()"
+            (click)="authStore.token() !== undefined && logout()"
           >
-            {{ userLoggedIn()  === "" ? "Login" : "Logout" }}
+            {{ authStore.token()  === undefined ? "Login" : "Logout" }}
           </span>
         </ion-item>
       </ion-menu-toggle>

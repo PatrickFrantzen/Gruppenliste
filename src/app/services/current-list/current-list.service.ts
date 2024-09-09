@@ -49,6 +49,7 @@ export class CurrentListService {
   }
 
   getAllLists() {
+    //Nur ausführen wenn User tatsächlich eingeloggt ist, ansonsten wird sofort der Request ausgelöst und es ist noch kein Token vorhanden
     this.http.get<Liste[]>(BACKEND_BEDARFSLISTE)
     .subscribe({
       next: (response) => {
@@ -94,7 +95,7 @@ export class CurrentListService {
         unit: 'kg',
         category: 'Obst',
         bought: false,
-        zugeordneteUser: [{name: 'Patrick', id: '0'}],
+        zugeordneteMitglieder: [{name: 'Patrick', id: '0'}],
         id: 0,
       },
       {
@@ -103,7 +104,7 @@ export class CurrentListService {
         unit: 'Stück',
         category: 'Gemüse',
         bought: true,
-        zugeordneteUser: [{name: 'Patrick', id: '0'}],
+        zugeordneteMitglieder: [{name: 'Patrick', id: '0'}],
         id: 1,
       },
       {
@@ -112,7 +113,7 @@ export class CurrentListService {
         unit: 'Liter',
         category: 'Getränke',
         bought: false,
-        zugeordneteUser: [{name: 'Patrick', id: '0'}],
+        zugeordneteMitglieder: [{name: 'Patrick', id: '0'}],
         id: 2,
       },
     ],
@@ -130,7 +131,7 @@ export class CurrentListService {
           unit: 'kg',
           category: 'Obst',
           bought: false,
-          zugeordneteUser: [{name: 'Patrick', id: '0'}, {name: 'Rita', id: '1'}, {name: 'Thomas', id: '2'}, {name: 'Michael', id: '3'}],
+          zugeordneteMitglieder: [{name: 'Patrick', id: '0'}, {name: 'Rita', id: '1'}, {name: 'Thomas', id: '2'}, {name: 'Michael', id: '3'}],
           id: 0,
         },
         {
@@ -139,7 +140,7 @@ export class CurrentListService {
           unit: 'Stück',
           category: 'Gemüse',
           bought: true,
-          zugeordneteUser: [{ name: 'Patrick', id: '0' }],
+          zugeordneteMitglieder: [{ name: 'Patrick', id: '0' }],
           id: 1,
         },
         {
@@ -148,7 +149,7 @@ export class CurrentListService {
           unit: 'Liter',
           category: 'Getränke',
           bought: false,
-          zugeordneteUser: [{ name: 'Thomas', id: '2' }],
+          zugeordneteMitglieder: [{ name: 'Thomas', id: '2' }],
           id: 2,
         },
       ],
@@ -164,7 +165,7 @@ export class CurrentListService {
           unit: 'kg',
           category: 'Fisch',
           bought: false,
-          zugeordneteUser: [{ name: 'Patrick', id: '0' }],
+          zugeordneteMitglieder: [{ name: 'Patrick', id: '0' }],
           id: 0,
         },
         {
@@ -173,7 +174,7 @@ export class CurrentListService {
           unit: 'Stück',
           category: 'Fleisch',
           bought: true,
-          zugeordneteUser: [{ name: 'Patrick', id: '0' }],
+          zugeordneteMitglieder: [{ name: 'Patrick', id: '0' }],
           id: 1,
         },
         {
@@ -182,7 +183,7 @@ export class CurrentListService {
           unit: 'Liter',
           category: 'Beilagen',
           bought: false,
-          zugeordneteUser: [{ name: 'Patrick', id: '0' }],
+          zugeordneteMitglieder: [{ name: 'Patrick', id: '0' }],
           id: 2,
         },
       ],
@@ -198,7 +199,7 @@ export class CurrentListService {
           unit: 'kg',
           category: 'Computer',
           bought: false,
-          zugeordneteUser: [],
+          zugeordneteMitglieder: [],
           id: 0,
         },
         {
@@ -207,7 +208,7 @@ export class CurrentListService {
           unit: 'Stück',
           category: 'Werkzeug',
           bought: true,
-          zugeordneteUser: [],
+          zugeordneteMitglieder: [],
           id: 1,
         },
         {
@@ -216,7 +217,7 @@ export class CurrentListService {
           unit: 'Liter',
           category: 'Skateboard',
           bought: false,
-          zugeordneteUser: [],
+          zugeordneteMitglieder: [],
           id: 2,
         },
       ],

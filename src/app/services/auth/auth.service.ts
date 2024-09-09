@@ -5,6 +5,7 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { Router } from '@angular/router';
 import { CurrentListService } from '../current-list/current-list.service';
 import { Liste } from '../../models/list.model';
+import { AuthStore } from '../../store/auth.store';
 
 const BACKEND_AUTH = environment.apiURL + '/gl/auth/';
 
@@ -17,8 +18,9 @@ export class AuthService {
   router = inject(Router)
   currentListService = inject(CurrentListService);
 
-  tokenSignal = signal('');
-  adminSignal = signal<boolean | undefined>(undefined);
+
+  // tokenSignal = signal('');
+  // adminSignal = signal<boolean | undefined>(undefined);
   private tokenExpirationTimer: any;
 
 
@@ -34,29 +36,34 @@ export class AuthService {
     });
   }
 
-  login(name: string, password: string) {
+  async login(name: string, password: string): Promise<string> {
     const loginAuthDto = { name, password };
-    this.http.post<{accessToken: string, bedarfslisten: Liste[]}>(BACKEND_AUTH + 'login', loginAuthDto)
-    .subscribe({
-      next: (response) => {
-        localStorage.setItem('token', response.accessToken);
-        const decodedToken = jwtDecode(response.accessToken);
-        this.tokenSignal.set(response.accessToken);
-        this.adminSignal.set(decodedToken.isAdmin);
-        this.currentListService.bedarfsliste.set(response.bedarfslisten);
-        this.checkExpirationDurationAndSetTimer(decodedToken);
-        this.router.navigate(['/']);
-      },
-      error: (error) => {
-        console.log(error);
-      }
+    return new Promise<string>((resolve, reject) => {
+      this.http.post<{accessToken: string, bedarfslisten: Liste[]}>(BACKEND_AUTH + 'login', loginAuthDto)
+      .subscribe({
+        next: (response) => {
+          localStorage.setItem('token', response.accessToken);
+          const decodedToken = jwtDecode(response.accessToken);
+          
+          // this.tokenSignal.set(response.accessToken);
+          // this.adminSignal.set(decodedToken.isAdmin);
+          this.currentListService.bedarfsliste.set(response.bedarfslisten);
+          // this.checkExpirationDurationAndSetTimer(decodedToken);
+          this.router.navigate(['/']);
+          resolve(response.accessToken);
+        },
+        error: (error) => {
+          console.log(error);
+          reject(error);
+        }
+      });
     });
   }
 
   logout() {
     localStorage.removeItem('token');
-    this.tokenSignal.set('');
-    this.adminSignal.set(undefined);
+    // this.tokenSignal.set('');
+    // this.adminSignal.set(undefined);
     this.currentListService.bedarfsliste.set([]);
     this.router.navigate(['/login']);
 
@@ -70,33 +77,35 @@ export class AuthService {
     const expirationDuration = decodedToken.exp
       ? decodedToken.exp * 1000 - Date.now()
       : null;
+    // if (expirationDuration) {
+    //   const hours = Math.floor(expirationDuration / (1000 * 60 * 60));
+    //   const minutes = Math.floor(
+    //     (expirationDuration % (1000 * 60 * 60)) / (1000 * 60)
+    //   );
+    //   const seconds = Math.floor((expirationDuration % (1000 * 60)) / 1000);
+    //   // console.log(
+    //   //   'expirationDuration',
+    //   //   hours,
+    //   //   'hours',
+    //   //   minutes,
+    //   //   'minutes',
+    //   //   seconds,
+    //   //   'seconds'
+    //   // );
+    //   this.tokenExpirationTimer = setTimeout(() => {
+    //     // this.logout();
+    //     // this.authStore.logout();
+    //   }, expirationDuration);
+    // }
     if (expirationDuration) {
-      const hours = Math.floor(expirationDuration / (1000 * 60 * 60));
-      const minutes = Math.floor(
-        (expirationDuration % (1000 * 60 * 60)) / (1000 * 60)
-      );
-      const seconds = Math.floor((expirationDuration % (1000 * 60)) / 1000);
-      // console.log(
-      //   'expirationDuration',
-      //   hours,
-      //   'hours',
-      //   minutes,
-      //   'minutes',
-      //   seconds,
-      //   'seconds'
-      // );
       this.tokenExpirationTimer = setTimeout(() => {
-        this.logout();
-      }, expirationDuration);
-    }
-    if (expirationDuration) {
-      this.tokenExpirationTimer = setTimeout(() => {
-        this.logout();
+        // this.authStore.logout();
+        // this.logout();
       }, expirationDuration);
     }
   }
 
-  checkIfTokenIsValid(): boolean {
+  checkIfTokenIsValid(): {token: string, isAdmin: boolean} | false {
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -108,13 +117,14 @@ export class AuthService {
       ? new Date(decodedToken.exp * 1000)
       : null;
     if (expirationDate && expirationDate <= new Date()) {
-      this.logout();
+      // this.logout();
+      // this.authStore.logout();
       return false;
     }
-    this.tokenSignal.set(token);
-    this.adminSignal.set(decodedToken.isAdmin);
-    this.currentListService.getAllLists();
-    this.checkExpirationDurationAndSetTimer(decodedToken);
-    return true;
+    // this.tokenSignal.set(token);
+    // this.adminSignal.set(decodedToken.isAdmin);
+    // this.currentListService.getAllLists();
+    // this.checkExpirationDurationAndSetTimer(decodedToken);
+    return {token, isAdmin: decodedToken.isAdmin};
   }
 }

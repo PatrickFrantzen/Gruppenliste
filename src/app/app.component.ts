@@ -6,6 +6,7 @@ import { FooterComponent } from "./components/footer/footer.component";
 import { IonContent, IonApp } from '@ionic/angular/standalone';
 import { AuthService } from './services/auth/auth.service';
 import { filter } from 'rxjs';
+import { AuthStore } from './store/auth.store';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
   title = 'Gruppenliste';
 
   authService = inject(AuthService);
+  authStore = inject(AuthStore);
   router = inject(Router);
   ngOnInit(): void {
     this.router.events
@@ -27,7 +29,8 @@ export class AppComponent implements OnInit {
       )
     )
     .subscribe((event: NavigationEnd) => {
-      this.authService.checkIfTokenIsValid();
+      // this.authService.checkIfTokenIsValid();
+      this.authStore.loadTokenFromLocalStorage();
     });
   }
 }
