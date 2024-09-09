@@ -19,7 +19,7 @@ export interface Lists {
     allLists: List[];
 }
 
-export interface Liste {
+export interface Bedarfsliste {
   name: string,
   id: string
 }

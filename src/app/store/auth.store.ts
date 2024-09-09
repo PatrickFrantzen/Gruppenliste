@@ -3,12 +3,13 @@ import { AuthService } from '../services/auth/auth.service';
 import { inject } from '@angular/core';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { CurrentListService } from '../services/current-list/current-list.service';
+import { BedarfslistenStore } from './bedarfslisten.store';
 
 type AuthState = {
   token: string | undefined;
   loading: boolean;
   isAdmin: boolean;
-  tokenExpirationTimer: any;
+  tokenExpirationTimer: any | null;
 };
 
 const initialState: AuthState = {
@@ -21,7 +22,7 @@ const initialState: AuthState = {
 export const AuthStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withMethods((store, authService = inject(AuthService), currentListService = inject(CurrentListService)) => ({
+  withMethods((store, authService = inject(AuthService), currentListService = inject(CurrentListService), bedarfslistenStore = inject(BedarfslistenStore)) => ({
     async login(name: string, password: string) {
       patchState(store, { loading: true });
 
@@ -30,14 +31,18 @@ export const AuthStore = signalStore(
       const isAdmin = decodedToken.isAdmin;
       this.checkExpirationDurationAndSetTimer(decodedToken);
       patchState(store, { token: token, isAdmin, loading: false });
-      console.log('login', token, isAdmin);
-      currentListService.getAllLists();
+      // currentListService.getAllBedarfslisten();
+      bedarfslistenStore.getAllBedarfslisten();
     },
 
     logout() {
-        console.log('logout');
       authService.logout();
-      patchState(store, { token: undefined, isAdmin: false });
+      bedarfslistenStore.removeAllBedarfslistenOnLogout();
+      const timer = store.tokenExpirationTimer;
+      if (typeof timer === 'number') {
+        clearTimeout(timer)!;
+      } 
+      patchState(store, { token: undefined, isAdmin: false, tokenExpirationTimer: null });
     },
 
     loadTokenFromLocalStorage(): boolean {
@@ -45,14 +50,13 @@ export const AuthStore = signalStore(
 
       if (token) {
         this.checkExpirationDurationAndSetTimer(jwtDecode(token.token));
-        console.log('laoded', token.token);
         patchState(store, { token: token.token, isAdmin: token.isAdmin });
-        currentListService.getAllLists();
+        // currentListService.getAllBedarfslisten();
+      bedarfslistenStore.getAllBedarfslisten();
+
         return true;
       } else {
-        console.log('no token');
-        // authService.logout();
-        // return false;
+        this.logout();
         return true
       }
     },

@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { List, Liste } from '../../models/list.model';
+import { List, Bedarfsliste } from '../../models/list.model';
 import { UserService } from '../user/user.service';
 import { Bedarfsliste_Item, Item } from '../../models/item.model';
 import { HttpClient } from '@angular/common/http';
@@ -17,7 +17,7 @@ export class CurrentListService {
   http: HttpClient = inject(HttpClient);
   userService = inject(UserService);
 
-  bedarfsliste = signal<Liste[]>([]);
+  bedarfsliste = signal<Bedarfsliste[]>([]);
   choosenListIDSignal = signal<string>('');
   currentListNameSignal = signal<string>('');
 
@@ -37,7 +37,7 @@ export class CurrentListService {
   //NEU
   postList(list: List) {
     const createBedarfslisteDto = { name: list.name, items: list.items, mitglieder: list.zugeordneteUser  };
-    this.http.post<Liste>(BACKEND_MITGLIED + 'createListe', createBedarfslisteDto)
+    this.http.post<Bedarfsliste>(BACKEND_MITGLIED + 'createListe', createBedarfslisteDto)
     .subscribe({
       next: (response) => {
         this.addToBedarfsliste(response);
@@ -48,21 +48,25 @@ export class CurrentListService {
     });
   }
 
-  getAllLists() {
+  async getAllBedarfslisten(): Promise<Bedarfsliste[]> {
     //Nur ausführen wenn User tatsächlich eingeloggt ist, ansonsten wird sofort der Request ausgelöst und es ist noch kein Token vorhanden
-    this.http.get<Liste[]>(BACKEND_BEDARFSLISTE)
+    return new Promise<Bedarfsliste[]>((resolve, reject) => {
+      this.http.get<Bedarfsliste[]>(BACKEND_BEDARFSLISTE)
     .subscribe({
       next: (response) => {
-        this.bedarfsliste.set(response);
+        // this.bedarfsliste.set(response);
+        resolve(response);
       }, 
       error: (error) => {
+        reject(error);
         console.log(error);
       }
     });
+    }) 
   }
 
 
-  addToBedarfsliste(liste: Liste){
+  addToBedarfsliste(liste: Bedarfsliste){
     this.bedarfsliste.update((list) => {
       return [...list, liste];
     });
@@ -74,6 +78,7 @@ export class CurrentListService {
       this.http.post(`${BACKEND_BEDARFSLISTE}addItem/${listeID}`, item)
       .subscribe({
         next: (response) => {
+          //Bedarfslisten_Item Store erstellen und hinzuzufügen
           console.log('antwort', response);
         },
         error: (error) => {

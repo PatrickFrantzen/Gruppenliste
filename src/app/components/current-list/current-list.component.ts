@@ -110,10 +110,8 @@ export class CurrentListComponent {
   }
 
   checkifUserIsAssigned(item: Item) {
-    console.log('item', item);
     if (item.zugeordneteMitglieder.length === 0) {
       return false;
-      
     } else 
     return item.zugeordneteMitglieder.includes(this.userSerivce.user());
   }

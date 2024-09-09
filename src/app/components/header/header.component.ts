@@ -21,8 +21,9 @@ import { AuthService } from '../../services/auth/auth.service';
 import { addIcons } from 'ionicons';
 import { add } from 'ionicons/icons';
 import { AddListComponent } from '../dialoge/add-list/add-list.component';
-import { Liste } from '../../models/list.model';
+import { Bedarfsliste } from '../../models/list.model';
 import { AuthStore } from '../../store/auth.store';
+import { BedarfslistenStore } from '../../store/bedarfslisten.store';
 
 @Component({
   selector: 'app-header',
@@ -51,13 +52,15 @@ export class HeaderComponent {
   constructor(
   ) {
     effect(() => {
-      console.log('Bedarfsliste', this.allLists());
-      console.log('Items', this.currentListService.bedarfsItemForDisplay());
+      // console.log('Bedarfsliste', this.allLists());
+      // console.log('Items', this.currentListService.bedarfsItemForDisplay());
     });
     addIcons({ add });
   }
   @ViewChild(IonModal) addListeModal: IonModal | undefined;
   readonly authStore = inject(AuthStore);
+  readonly bedarfslistenStore = inject(BedarfslistenStore);
+
   readonly userService = inject(UserService);
   readonly authService = inject(AuthService);
   public setChoosenListID = inject(CurrentListService).choosenListIDSignal;
@@ -73,7 +76,7 @@ export class HeaderComponent {
 
   }
 
-  selectList(liste: Liste) {
+  selectList(liste: Bedarfsliste) {
     console.log('Liste ausgewählt', liste);
     this.setChoosenListID.set(liste.id);
     this.setChoosenListName.set(liste.name);

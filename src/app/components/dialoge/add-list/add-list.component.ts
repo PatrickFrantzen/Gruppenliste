@@ -10,6 +10,7 @@ import { UserService } from '../../../services/user/user.service';
 import { List } from '../../../models/list.model';
 import { Mitglied } from '../../../models/mitglied.model';
 import { Item } from '../../../models/item.model';
+import { BedarfslistenStore } from '../../../store/bedarfslisten.store';
 
 @Component({
   selector: 'app-add-list',
@@ -41,6 +42,8 @@ export class AddListComponent  implements OnInit {
   @Input() modus: 'create' | 'edit' = 'create';
   @Input() list: List | undefined;
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
+
+  bedarfslistenStore = inject(BedarfslistenStore);
 
   currentListService = inject(CurrentListService);
   currentUserService = inject(UserService);
@@ -85,7 +88,8 @@ export class AddListComponent  implements OnInit {
       // );
       // console.log('Item', item);
 
-      this.currentListService.postList(list);
+      // this.currentListService.postList(list);
+      this.bedarfslistenStore.addBedarfsliste(list);
       this.closeModal.emit();
     }
   }

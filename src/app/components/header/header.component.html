@@ -21,7 +21,7 @@
         Neue Liste erstellen
       </ion-button>
 
-      @if (authStore.token() ) { @for(list of allLists(); track list.id){
+      @if (authStore.token() ) { @for(list of bedarfslistenStore.bedarfslisten(); track list.id){
       <ion-menu-toggle>
         <ion-item
           class="cursor-pointer"
