@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth/auth.service';
 import { inject } from '@angular/core';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { CurrentListService } from '../services/current-list/current-list.service';
+import { BedarfslisteStore } from './list.store';
 import { BedarfslistenStore } from './bedarfslisten.store';
 
 type AuthState = {
@@ -56,8 +57,7 @@ export const AuthStore = signalStore(
 
         return true;
       } else {
-        this.logout();
-        return true
+        return false
       }
     },
 
@@ -85,7 +85,6 @@ export const AuthStore = signalStore(
         }
         patchState(store, {
           tokenExpirationTimer: setTimeout(() => {
-            console.log('Timer abgelaufen');
             this.logout();
           }, expirationDuration),
         });

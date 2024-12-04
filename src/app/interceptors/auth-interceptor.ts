@@ -20,7 +20,6 @@ export class TokenInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // const token = this.authService.tokenSignal()
     if (this.authStore.token()) {
       request = request.clone({
         setHeaders: {
@@ -31,12 +30,11 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error) => {
         if (error.status === 401) {
-            console.log('Token expired or invalid, log out user');
           // Token expired or invalid, log out user
           this.authStore.logout();
           // this.authService.logout();
         }
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }

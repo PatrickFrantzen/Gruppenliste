@@ -73,7 +73,6 @@ export class CurrentListService {
   }
 
   saveItem(item: Bedarfsliste_Item) {
-      console.log(item);
       const listeID = this.choosenListIDSignal();
       this.http.post(`${BACKEND_BEDARFSLISTE}addItem/${listeID}`, item)
       .subscribe({
@@ -82,7 +81,7 @@ export class CurrentListService {
           console.log('antwort', response);
         },
         error: (error) => {
-          console.log(error);
+          console.warn(error);
         }
       });
   }

@@ -73,7 +73,6 @@ export class CurrentListComponent {
       }
       return i;
     });
-    console.log(this.currentList().items);
     this.listService.updateListInAllLists(this.currentList());
   }
 

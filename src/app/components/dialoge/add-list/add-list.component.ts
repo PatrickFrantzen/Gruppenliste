@@ -10,6 +10,7 @@ import { UserService } from '../../../services/user/user.service';
 import { List } from '../../../models/list.model';
 import { Mitglied } from '../../../models/mitglied.model';
 import { Item } from '../../../models/item.model';
+import { BedarfslisteStore } from '../../../store/list.store';
 import { BedarfslistenStore } from '../../../store/bedarfslisten.store';
 
 @Component({
@@ -18,10 +19,8 @@ import { BedarfslistenStore } from '../../../store/bedarfslisten.store';
   imports: [
     IonList,
     IonLabel,
-    IonIcon,
     MatButtonModule,
     MatDialogModule,
-    MatFormField,
     ReactiveFormsModule,
     MatInputModule,
     IonHeader,
@@ -29,7 +28,6 @@ import { BedarfslistenStore } from '../../../store/bedarfslisten.store';
     IonButtons,
     IonButton,
     IonTitle,
-    IonContent,
     IonItem,
     IonInput,
     IonSelect,
@@ -45,6 +43,7 @@ export class AddListComponent  implements OnInit {
 
   bedarfslistenStore = inject(BedarfslistenStore);
 
+  listStore = inject(BedarfslisteStore)
   currentListService = inject(CurrentListService);
   currentUserService = inject(UserService);
   modalController = inject(ModalController);
@@ -78,15 +77,6 @@ export class AddListComponent  implements OnInit {
       const items: Item[] = [];
       const mitglieder = values.mitglieder!;
       const list = new List(name, items, mitglieder);
-      //Ans Backend senden und neue Liste erstellen
-
-      // const item = new Item(
-      //   values.name,
-      //   values.amount || 0,
-      //   values.unit,
-      //   values.category
-      // );
-      // console.log('Item', item);
 
       // this.currentListService.postList(list);
       this.bedarfslistenStore.addBedarfsliste(list);

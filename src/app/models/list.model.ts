@@ -23,3 +23,9 @@ export interface Bedarfsliste {
   name: string,
   id: string
 }
+
+export interface CreateBedarfsListeDTO {
+  name: string,
+  items: Item[],
+  mitglieder: Mitglied[]
+}

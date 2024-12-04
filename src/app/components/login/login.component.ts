@@ -26,6 +26,7 @@ import {
 import { addIcons } from 'ionicons';
 import { eye, eyeOff } from 'ionicons/icons';
 import { AuthStore } from '../../store/auth.store';
+import { BedarfslisteStore } from '../../store/list.store';
 
 @Component({
   selector: 'app-login',

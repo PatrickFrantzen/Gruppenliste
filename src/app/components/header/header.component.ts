@@ -22,6 +22,7 @@ import { addIcons } from 'ionicons';
 import { add } from 'ionicons/icons';
 import { AddListComponent } from '../dialoge/add-list/add-list.component';
 import { Bedarfsliste } from '../../models/list.model';
+import { Bedarfsliste } from '../../models/list.model';
 import { AuthStore } from '../../store/auth.store';
 import { BedarfslistenStore } from '../../store/bedarfslisten.store';
 
@@ -53,6 +54,7 @@ export class HeaderComponent {
   ) {
     effect(() => {
       // console.log('Bedarfsliste', this.allLists());
+      // console.log('ListStore', this.listStore.bedarfslisten());
       // console.log('Items', this.currentListService.bedarfsItemForDisplay());
     });
     addIcons({ add });
@@ -68,7 +70,7 @@ export class HeaderComponent {
   readonly currentListService = inject(CurrentListService);
   // readonly userLoggedIn = this.authService.tokenSignal;
 
-  allLists = this.currentListService.bedarfsliste;
+  // allLists = this.currentListService.bedarfsliste;
 
   logout() {
     // this.authService.logout();
@@ -76,6 +78,7 @@ export class HeaderComponent {
 
   }
 
+  selectList(liste: Bedarfsliste) {
   selectList(liste: Bedarfsliste) {
     console.log('Liste ausgewählt', liste);
     this.setChoosenListID.set(liste.id);
